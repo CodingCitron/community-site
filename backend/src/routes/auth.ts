@@ -83,7 +83,13 @@ const login = async (req: Request, res: Response) => {
         const token = jwt.sign({ username }, process.env.JWT_SECRET)
 
         // 쿠키저장
-        res.set("set-cookie", cookie.serialize("toekn", token))
+        res.set("set-cookie", cookie.serialize("toekn", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "productioon",
+            sameSite: "strict",
+            maxAge: 60 * 60 * 24 * 7,
+            path: "/"
+        }))
         return res.json({ user, token })
     } catch (error: any) {
         console.error(error)
