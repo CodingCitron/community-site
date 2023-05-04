@@ -24,7 +24,7 @@ const login = () => {
             }, {
                 withCredentials: true
             })
-
+            
             dispatch("LOGIN", res.data?.user)
 
             // 로그인 후 메인 페이지로 이동
