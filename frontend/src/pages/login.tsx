@@ -3,6 +3,7 @@ import Link from 'next/link'
 import InputGroup from '@/components/InputGroup'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useAuthDispatch } from '@/context/auth'
 
 const login = () => {
     const router = useRouter()
@@ -10,6 +11,8 @@ const login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [errors, setErrors] = useState<any>({})
+
+    const dispatch = useAuthDispatch()
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
@@ -21,6 +24,11 @@ const login = () => {
             }, {
                 withCredentials: true
             })
+
+            dispatch("LOGIN", res.data?.user)
+
+            // 로그인 후 메인 페이지로 이동
+            router.push("/")
 
         } catch (error: any) {
             console.log(error)
