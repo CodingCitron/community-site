@@ -1,10 +1,22 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
+import useSWR from 'swr'
+import { Sub } from '@/types'
+import axios from 'axios'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  
+  const fetcher = async (url: string) => {
+    const res = await axios.get(url)
+    return res.data
+  }
+
+  const address = "http://localhost:4000/api/subs/sub/topSubs"
+  const { data: topSubs } = useSWR<Sub[]>(address, fetcher)
+
   return (
     <div className='flex max-w-5xl px-4 pt-5 mx-auto'>
       {/* 포스트 리스트 */}
