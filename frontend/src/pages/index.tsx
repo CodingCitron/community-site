@@ -4,11 +4,13 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { Sub } from '@/types'
 import axios from 'axios'
+import { useAuthState } from '@/context/auth'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  
+  const {authenticated} = useAuthState()
+
   const fetcher = async (url: string) => {
     const res = await axios.get(url)
     return res.data
@@ -16,6 +18,7 @@ export default function Home() {
 
   const address = "http://localhost:4000/api/subs/sub/topSubs"
   const { data: topSubs } = useSWR<Sub[]>(address, fetcher)
+  console.log(topSubs)
 
   return (
     <div className='flex max-w-5xl px-4 pt-5 mx-auto'>
@@ -33,13 +36,46 @@ export default function Home() {
             </p>
           </div>
           {/* 커뮤니티 리스트 */}
-          <div></div>
-          <div className='w-full py-6 text-center'>
-            <Link href="/subs/create" className='w-full p-2 text-white bg-gray-400 rounded'>
-              커뮤니티 생성
-            </Link>
+          <div>
+            {topSubs?.map(sub => (
+              <div
+                key={sub.name}
+                className='flex items-center px-4 py-2 text-xs border-b'
+              >
+                <Link 
+                  href={`/r/${sub.name}`}
+                  className=''
+                >
+                  <Image
+                    src={sub.imageUrl}
+                    alt="profile image"
+                    className='rounded-full cursor-pointer'
+                    width={24}
+                    height={24}
+                  ></Image>
+                </Link>
+                <Link
+                  href={`/r/${sub.name}`}
+                  className='ml-2 font-bold hover:cursor-pointer'
+                >
+                  /r/{sub.name}
+                </Link>
+                <p
+                  className='ml-auto font-md'
+                >
+                  {sub.postCount}
+                </p>
+              </div>
+            ))}
           </div>
-        </div>
+          {authenticated &&
+            <div className='w-full py-6 text-center'>
+              <Link href="/subs/create" className='w-full p-2 text-white bg-gray-400 rounded'>
+                커뮤니티 생성
+              </Link>
+            </div>
+          }
+          </div>
       </div>
     </div>
   )
