@@ -74,8 +74,22 @@ const topSubs = async (_: Request, res: Response) => {
     }
 }
 
+const getSub = async (req: Request, res: Response) => {
+    const name = req.params.name
+
+    try {
+        const sub = await Sub.findOneByOrFail({ name })
+        return res.json(sub)
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ error: "커뮤니티를 찾을 수 없습니다." })
+    }
+}
+
 const router = Router()
 
+router.get("/:name", userMiddleware, authMiddleware, getSub)
 router.post("/", userMiddleware, authMiddleware, createSub)
 router.get("/sub/topSubs", topSubs) 
+
 export default router
