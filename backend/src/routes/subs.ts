@@ -82,6 +82,20 @@ const getSub = async (req: Request, res: Response) => {
 
     try {
         const sub = await Sub.findOneByOrFail({ name })
+
+        // 포스트를 생성한 후에 해당 sub에 속하는 포스트 정보들을 넣어주기
+        const posts = await Post.find({
+            where: { subName: sub.name },
+            order: { createdAt: "DESC" },
+            relations: ["comments", "votes"]
+        })
+
+        sub.posts = posts
+
+        if(res.locals.user) {
+            sub.posts.forEach(post => post.setUserVote(res.locals.user))
+        }
+
         return res.json(sub)
     } catch (error) {
         console.log(error)

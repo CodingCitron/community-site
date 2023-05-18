@@ -25,6 +25,7 @@ export interface Post {
     title: string
     slug: string
     body: string
+    username: string
     subName: string
     createdAt: string
     updatedAt: string
