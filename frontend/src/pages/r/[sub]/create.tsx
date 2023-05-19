@@ -23,7 +23,9 @@ const PostCreate = () => {
                 sub: subName
             })
 
-            router.push(`/r/${subName}/${post.identifier}}/${post.slug}`)
+            console.log(post)
+
+            router.push(`/r/${subName}/${post.identifier}/${post.slug}`)
         } catch (error) {
             console.log(error)
         }
