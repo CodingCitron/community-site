@@ -10,7 +10,7 @@ import React from 'react'
 
 interface PostCardProps {
     post: Post,
-    subMutate:() => void
+    subMutate?:() => void
 }
 
 const PostCard = ({ post: {
@@ -39,7 +39,7 @@ const PostCard = ({ post: {
         console.log(value, userVote)
         try {
             await axios.post("/votes", { identifier, slug, value })
-            subMutate()
+            if(subMutate) subMutate()
         } catch (error) {
             console.log(error)
         }

@@ -3,7 +3,8 @@ import BaseEntity from './Entity'
 import { User } from './User'
 import Sub from './Sub'
 import { Exclude, Expose } from "class-transformer"
-import { makeId, slugfy } from '../utils/helper'
+import { slugify } from "transliteration"
+import { makeId } from '../utils/helper'
 import Comment from './Commnet'
 import Vote from './Vote'
 
@@ -46,14 +47,14 @@ export default class Post extends BaseEntity {
     votes: Vote[]
 
     @Expose() get url(): string {
-        return `r/${this.subName}/${this.identifier}`
+        return `/r/${this.subName}/${this.identifier}/${this.slug}`
     }
 
     @Expose() get commentCount(): number {
         return this.comments?.length
     }
 
-    @Expose() get voteScoer(): number {
+    @Expose() get voteScore(): number {
         return this.votes?.reduce((memo, curt) => memo + (curt.value || 0), 0)
     }
 
@@ -67,6 +68,6 @@ export default class Post extends BaseEntity {
     @BeforeInsert()
     makeIdAndSlug() {
         this.identifier = makeId(7)
-        this.slug = slugfy(this.title)
+        this.slug = slugify(this.title)
     }
 }
