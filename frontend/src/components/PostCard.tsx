@@ -10,23 +10,27 @@ import React from 'react'
 
 interface PostCardProps {
     post: Post,
-    subMutate?:() => void
+    subMutate?:() => void,
+    mutate?: () => void
 }
 
 const PostCard = ({ post: {
-    identifier, 
-    slug, 
-    title, 
-    body, 
-    subName, 
-    createdAt, 
-    voteScore, 
-    userVote, 
-    commentCount, 
-    url, 
-    username, 
-    sub
-}, subMutate }: PostCardProps ) => {
+        identifier, 
+        slug, 
+        title, 
+        body, 
+        subName, 
+        createdAt, 
+        voteScore, 
+        userVote, 
+        commentCount, 
+        url, 
+        username, 
+        sub
+    }, 
+    mutate,
+    subMutate 
+}: PostCardProps ) => {
 
     const router = useRouter()
     const isInSubPage = router.pathname === '/r/[sub]'
@@ -39,6 +43,8 @@ const PostCard = ({ post: {
         console.log(value, userVote)
         try {
             await axios.post("/votes", { identifier, slug, value })
+
+            if(mutate) mutate()
             if(subMutate) subMutate()
         } catch (error) {
             console.log(error)
@@ -94,6 +100,8 @@ const PostCard = ({ post: {
                                 src={sub.imageUrl}
                                 alt="sub"
                                 className='w-6 h-6 mr-1 rounded-full cursor-pointer'
+                                width={24}
+                                height={24}
                             />
                         }
                     </Link>
@@ -109,7 +117,7 @@ const PostCard = ({ post: {
             <p className='text-xs text-gray-400 '>
                 Posted by
                 <Link 
-                    href={`/r/${username}`}
+                    href={`/u/${username}`}
                     className='mx-1 hover:under'
                 >
                     /u/${username}
