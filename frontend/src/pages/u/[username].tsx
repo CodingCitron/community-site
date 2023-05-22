@@ -33,7 +33,7 @@ const UserPage = () => {
                             key={comment.identifier}
                             className='flex my-4 bg-white rounded'
                         >
-                            <div className='flex-shrink-0 w-10 py-10 text-center bg-gray-200 rounded-l'>
+                            <div className='flex-shrink-0 w-10 py-10 text-center bg-white border-r rounded-l'>
                                 <span className='text-gray-500'>
                                     {/* 아이콘 */}
                                 </span>
@@ -46,7 +46,9 @@ const UserPage = () => {
                                     >
                                         {comment.username}
                                     </Link>
+                                    {" "}
                                     <span>commented on</span>
+                                    {" "}
                                     <Link 
                                         href={`/u/${comment.post?.url}`}
                                         className="cursor-pointer font-semibold 
@@ -54,7 +56,9 @@ const UserPage = () => {
                                     >
                                         {comment.post?.title}
                                     </Link>
+                                    {" "}
                                     <span>*</span>
+                                    {" "}
                                     <Link 
                                         href={`/u/${comment.post?.subName}`}
                                         className="text-black cursor-pointer font-semibold 
@@ -85,7 +89,7 @@ const UserPage = () => {
                     {data.user.username}
                 </p>
             </div>
-            <div>
+            <div className='p-2 bg-white rounded-b'>
                 <p>
                     {dayjs(data.user.createdAt).format("YYYY.MM.DD")} 가입
                 </p>

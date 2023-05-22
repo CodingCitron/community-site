@@ -92,7 +92,8 @@ const PostCard = ({ post: {
         </div>
         {/* 포스트 데이터 부분 */}
         <div className='w-full p-2'>
-            {! isInSubPage && (
+            <div className='flex items-center'>
+                {! isInSubPage && (
                 <div className='flex items-center'>
                     <Link href={`/r/${subName}`} className=''>
                         {sub && 
@@ -113,22 +114,23 @@ const PostCard = ({ post: {
                     </Link>
                     <span className='mx-1 text-xs text-gray-400'></span>
                 </div>
-            )}
-            <p className='text-xs text-gray-400 '>
-                Posted by
-                <Link 
-                    href={`/u/${username}`}
-                    className='mx-1 hover:under'
-                >
-                    /u/${username}
-                </Link>
-                <Link 
-                    href={url}
-                    className='mx-1 hover:underline'
-                >
-                    {dayjs(createdAt).format("YYYY-MM-DD HH:mm")}
-                </Link>
-            </p>
+                )}
+                <p className='text-xs text-gray-400 '>
+                    Posted by
+                    <Link 
+                        href={`/u/${username}`}
+                        className='mx-1 hover:under'
+                    >
+                        /u/${username}
+                    </Link>
+                    <Link 
+                        href={url}
+                        className='mx-1 hover:underline'
+                    >
+                        {dayjs(createdAt).format("YYYY-MM-DD HH:mm")}
+                    </Link>
+                </p>
+            </div>
             <Link 
                 href={url}
                 className='my-1 text-lg font-medium'
